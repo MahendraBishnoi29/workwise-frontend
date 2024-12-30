@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import Link from "next/link";
+import { toast } from "sonner";
+import { authService } from "@/app/services/api-service";
 
 export default function Signup() {
   const router = useRouter();
@@ -29,21 +31,13 @@ export default function Signup() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:4000/api/user/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
-        }),
-      });
+      const data = await authService.signup(formData);
 
-      const data = await response.json();
-
-      if (response.ok) {
+      if (data.token) {
+        toast.success(data.message);
         router.push("/auth/login");
       } else {
-        alert(data.message || "Signup failed");
+        toast.error(data.message || "Signup failed");
       }
     } catch (error) {
       console.error("Signup failed:", error);
@@ -66,7 +60,7 @@ export default function Signup() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+              className="mt-1 block w-full text-black rounded-md border border-gray-300 px-3 py-2"
               required
             />
           </div>
@@ -79,7 +73,7 @@ export default function Signup() {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+              className="mt-1 block w-full text-black rounded-md border border-gray-300 px-3 py-2"
               required
             />
           </div>

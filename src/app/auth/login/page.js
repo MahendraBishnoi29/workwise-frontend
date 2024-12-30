@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import { toast } from "sonner";
+import { authService } from "@/app/services/api-service";
 
 export default function Login() {
   const router = useRouter();
@@ -13,12 +14,9 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:4000/api/user/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await response.json();
+      const data = await authService.login({ email, password });
+
+      router.push("/booking");
 
       if (data.token) {
         Cookies.set("token", data.token);
