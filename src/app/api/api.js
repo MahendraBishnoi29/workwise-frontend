@@ -5,7 +5,7 @@ const token = Cookies.get("token");
 
 export const bookSeats = (numOfSeats) =>
   axios.post(
-    `http://localhost:4000/api/seats/book`,
+    `${process.env.NEXT_PUBLIC_API_URL}/seats/book`,
     { numOfSeats },
     {
       headers: {
@@ -15,6 +15,7 @@ export const bookSeats = (numOfSeats) =>
   );
 
 export const resetBookings = () =>
-  axios.post(`http://localhost:4000/api/seats/initialize`);
+  axios.post(`${process.env.NEXT_PUBLIC_API_URL}/seats/initialize`);
 
-export const fetchSeats = () => axios.get(`http://localhost:4000/api/seats`);
+export const fetchSeats = () =>
+  axios.get(`${process.env.NEXT_PUBLIC_API_URL}/seats`);

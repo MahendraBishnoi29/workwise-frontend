@@ -37,10 +37,15 @@ export default function Signup() {
         toast.success(data.message);
         router.push("/auth/login");
       } else {
-        toast.error(data.message || "Signup failed");
+        toast.error(
+          error.response?.data?.message || error.message || "Signup failed"
+        );
       }
     } catch (error) {
       console.error("Signup failed:", error);
+      toast.error(
+        error.response?.data?.message || error.message || "Failed to book seats"
+      );
     }
   };
 

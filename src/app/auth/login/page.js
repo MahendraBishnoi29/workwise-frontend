@@ -25,7 +25,9 @@ export default function Login() {
         router.push("/booking");
       }
     } catch (error) {
-      console.error("Login failed:", error);
+      toast.error(
+        error.response?.data?.message || error.message || "Failed to book seats"
+      );
     }
   };
 
